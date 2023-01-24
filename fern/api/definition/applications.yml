@@ -244,7 +244,7 @@ types:
           The time in days between the last statement's closing date and the next statement's closing date. 
           For consumer lines of credit, the minimum is '21'
       finance_charge:
-        type: integer
+        type: optional<integer>
         docs: If your platform charges a monthly finance charge for access to the line, the amount in cents
       grace_period:
         type: integer

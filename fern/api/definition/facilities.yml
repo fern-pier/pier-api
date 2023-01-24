@@ -26,6 +26,11 @@ services:
           errors:
             - commons.FacilityCannotBeCreatedError
             - commons.FacilityAlreadyExistsError
+          examples: 
+            - request: 
+                loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+              response: 
+                body: $Facility.Active
 
         close:
           display-name: Close a facility
@@ -34,11 +39,16 @@ services:
           path-parameters:
             facility_id: FacilityId
           method: POST
-          request: CloseFacilityRequest
           response: Facility
           errors:
             - commons.FacilityNotFoundError
             - commons.FacilityCannotBeClosedError
+          examples: 
+            - path-parameters: 
+                facility_id: doc_234259b117854d0194bc5864a6c45b42
+              request: 
+              response: 
+                body: $Facility.Closed
 
         get:
           display-name: Retrieve a facility
@@ -52,6 +62,11 @@ services:
           response: Facility
           errors:
             - commons.FacilityNotFoundError
+          examples: 
+            - path-parameters: 
+                facility_id: doc_234259b117854d0194bc5864a6c45b42
+              response: 
+                body: $Facility.Active
 
         listAll:
           display-name: List all facilities
@@ -59,6 +74,10 @@ services:
           path: ""
           method: GET
           response: list<Facility>
+          examples: 
+            - response: 
+                body: 
+                  - $Facility.Active
 
 types:
   FacilityId: string
@@ -87,6 +106,27 @@ types:
       terms:
         type: applications.Offer
         docs: An object containing a summary of the terms of the facility.
+    examples: 
+      - name: Active
+        value: 
+          terms: $applications.Offer.LineOfCredit
+          id: fac_7264c6575a894548a386939434b0adf3
+          application_id: app_ad1564ffb1d745f9ad482bb5182708e2
+          borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
+          loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+          credit_type: revolving_line_of_credit
+          status: active
+          created_on: '2023-01-17T04:59:21.773Z'
+      - name: Closed
+        value: 
+          terms: $applications.Offer.LineOfCredit
+          id: fac_7264c6575a894548a386939434b0adf3
+          application_id: app_ad1564ffb1d745f9ad482bb5182708e2
+          borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
+          loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+          credit_type: revolving_line_of_credit
+          status: closed
+          created_on: '2023-01-17T04:59:21.773Z'
 
   CreditStatus:
     enum:
@@ -98,9 +138,3 @@ types:
       loan_agreement_id:
         type: loans.LoanAgreementId
         docs: The `loan_agreement_id` of the loan agreement to create a facility for
-
-  CloseFacilityRequest:
-    properties:
-      facility_id:
-        type: FacilityId
-        docs: The `facility_id` of the facility to close
