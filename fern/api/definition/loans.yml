@@ -7,7 +7,7 @@ imports:
 services:
   http:
     LoansService:
-      docs: | 
+      docs: |
         Once an application is accepted, the final step to complete the application process is for the applicant to execute the loan agreement. 
         The loan agreement object contains a `document_url` where the agreement is hosted and can have a status of `pending_signature`, `signed`, or `expired`. 
         Loan agreements that are not signed within 24 hours expire and need to be re-created
@@ -24,8 +24,8 @@ services:
           errors:
             - commons.ApplicationNotFoundError
             - commons.DocumentCannotBeCreatedError
-        
-        sign: 
+
+        sign:
           display-name: Sign a loan agreement
           docs: Electronically signs a loan document and updates the application's status to `accepted`
           path: /{loan_agreement_id}/sign
@@ -37,68 +37,68 @@ services:
           errors:
             - commons.ApplicationNotFoundError
             - commons.DocumentCannotBeSignedError
-        
-        get: 
+
+        get:
           display-name: Get a loan agreement by id
           docs: Retrieve a loan agreement by its id
           path: /{loan_agreement_id}
           path-parameters:
             loan_agreement_id: LoanAgreementId
-          method: GET 
+          method: GET
           response: LoanAgreement
           errors:
             - commons.DocumentNotFoundError
-        
-        getAll: 
-          display-name: List all loan agreements 
-          docs: List all loan agreements on your account 
+
+        getAll:
+          display-name: List all loan agreements
+          docs: List all loan agreements on your account
           path: /
           method: GET
           response: list<LoanAgreement>
 
-types: 
-  LoanAgreementId: string 
-  CreateLoanAgreementRequest: 
+types:
+  LoanAgreementId: string
+
+  CreateLoanAgreementRequest:
     properties:
-      application_id: 
+      application_id:
         type: applications.ApplicationId
         docs: The `application_id` of the application to create the loan agreement for
-  
-  LoanAgreement: 
+
+  LoanAgreement:
     properties:
       id: LoanAgreementId
-      application_id: 
-        type: string 
+      application_id:
+        type: string
         docs: The `application_id` of the corresponding loan application the agreement is for
-      created_on: 
-        type: string 
+      created_on:
+        type: string
         docs: Timestamp the loan agreement object is created on
-      document_url: 
-        type: string 
+      document_url:
+        type: string
         docs: Url where the loan agreement document is hosted
-      signature_timestamp: 
-        type: string 
+      signature_timestamp:
+        type: string
         docs: Timestamp of when e-signature is completed
-      status:   
+      status:
         type: LoanAgreementStatus
-        docs: The status of the document 
-    
-  LoanAgreementStatus: 
-    enum: 
+        docs: The status of the document
+
+  LoanAgreementStatus:
+    enum:
       - pending_signature
       - signed
       - expired
-  
-  SignLoanAgreementRequest: 
+
+  SignLoanAgreementRequest:
     properties:
       loan_agreement_id: LoanAgreementId
 
-  SignLoanAgreementResponse: 
+  SignLoanAgreementResponse:
     properties:
       status: LoanAgreementStatus
-      id: LoanAgreementId 
+      id: LoanAgreementId
       application_id: applications.ApplicationId
-      signature_timestamp: datetime 
-      document_url: string 
-      created_on: datetime 
-      
+      signature_timestamp: datetime
+      document_url: string
+      created_on: datetime
